@@ -45,6 +45,7 @@ struct ContentView: View {
                                         .cornerRadius(40)
                                         .foregroundColor(.white).bold()
                                         .font(.system(size:33))
+                                    
                                 }
                             }
                     }

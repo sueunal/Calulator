@@ -44,6 +44,7 @@
 		2CB3BED0298A79FC009A4EA4 /* CalulatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalulatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CB3BED4298A79FC009A4EA4 /* CalulatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalulatorUITests.swift; sourceTree = "<group>"; };
 		2CB3BED6298A79FC009A4EA4 /* CalulatorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalulatorUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2CB3BEE3298C13E1009A4EA4 /* CalulatorReadme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CalulatorReadme.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +95,7 @@
 		2CB3BEB8298A79FB009A4EA4 /* Calulator */ = {
 			isa = PBXGroup;
 			children = (
+				2CB3BEE3298C13E1009A4EA4 /* CalulatorReadme.md */,
 				2CB3BEB9298A79FB009A4EA4 /* CalulatorApp.swift */,
 				2CB3BEBB298A79FB009A4EA4 /* ContentView.swift */,
 				2CB3BEBD298A79FB009A4EA4 /* Assets.xcassets */,
