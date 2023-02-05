@@ -98,26 +98,18 @@ struct ContentView: View {
                 ForEach(buttonNumber,id:\.self) {line in
                     HStack{
                         ForEach(line, id:\.self){ item in
-                            Text(item.ButtonDisplayName)
                             Button{
                                 if totalNumber == "0" {
-                                    if item == .clear{
-                                        totalNumber = "0"
-                                    } else if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
+                                    if item == .clear{ totalNumber = "0" }
+                                    else if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
                                         totalNumber = "Error"
                                     }
-                                    else {
-                                        totalNumber = item.ButtonDisplayName
-                                    }
+                                    else { totalNumber = item.ButtonDisplayName }
                                 } else {
-                                    totalNumber += item.ButtonDisplayName
-                                    } if item == .clear{
-                                        totalNumber = "0"
-                                    } else {
-                                        totalNumber += item.ButtonDisplayName
+                                    if item == .clear{ totalNumber = "0" }
+                                    else { totalNumber += item.ButtonDisplayName }
                                 }
-                            }
-                        }label: {
+                            } label: {
                             Text(item.ButtonDisplayName)
                                 .frame(width: 80,height: 80)
                                 .background(item.backgroundColor)
@@ -126,6 +118,7 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                                 .bold()
                                 .font(.system(size:33))
+                            }
                         }
                     }
                 }
