@@ -67,7 +67,7 @@ struct ContentView: View {
                 return Color.gray
             }
         }
-        var forgroundColor : Color {
+        var foregroundColor : Color {
             switch self {
             case .first,.second,  .third, .fifth, .forth, .sixth, .seventh , .eighth, .nineth, .zero, .dot, .equal, .plus, .minus, .multiple, .devide:
                 return Color.white
@@ -81,49 +81,60 @@ struct ContentView: View {
         [.seventh, .eighth, .nineth, .multiple],
         [.forth, .fifth, .sixth, .minus],
         [.first, .second, .third, .plus],
-        [.zero, .zero, .dot, .equal]
+        [.zero, .dot, .equal]
     ]
-        var body: some View {
-            ZStack{
-                Color.black.ignoresSafeArea()
-                VStack {
+    var body: some View {
+        ZStack{
+            Color.black.ignoresSafeArea()
+            VStack {
+                Spacer()
+                HStack{
                     Spacer()
+                    Text(totalNumber)
+                        .font(.system(size:78))
+                        .foregroundColor(.white)
+                        .padding()
+                }
+                ForEach(buttonNumber,id:\.self) {line in
                     HStack{
-                        Spacer()
-                        Text(totalNumber)
-                            .font(.system(size:78))
-                            .foregroundColor(.white)
-                            .padding()
-                    }
-                    ForEach(buttonNumber,id:\.self) {line in
-                        HStack{
-                            ForEach(line, id:\.self){ item in
-                                Text(item.ButtonDisplayName)
-                                Button{
-                                    if totalNumber == "0"{
-                                        totalNumber = "7"
-                                    }else {
-                                        totalNumber += "7"
+                        ForEach(line, id:\.self){ item in
+                            Text(item.ButtonDisplayName)
+                            Button{
+                                if totalNumber == "0" {
+                                    if item == .clear{
+                                        totalNumber = "0"
+                                    } else if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
+                                        totalNumber = "Error"
                                     }
-                                }label: {
-                                    Text(item.ButtonDisplayName)
-                                        .frame(width: 80, height: 80)
-                                        .background(item.backgroundColor)
-                                        .foregroundColor(item.forgroundColor)
-                                        .cornerRadius(40)
-                                        .foregroundColor(.white).bold()
-                                        .font(.system(size:33))
-                                    
+                                    else {
+                                        totalNumber = item.ButtonDisplayName
+                                    }
+                                } else {
+                                    totalNumber += item.ButtonDisplayName
+                                    } if item == .clear{
+                                        totalNumber = "0"
+                                    } else {
+                                        totalNumber += item.ButtonDisplayName
                                 }
                             }
+                        }label: {
+                            Text(item.ButtonDisplayName)
+                                .frame(width: 80,height: 80)
+                                .background(item.backgroundColor)
+                                .foregroundColor(item.foregroundColor)
+                                .cornerRadius(40)
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.system(size:33))
                         }
                     }
                 }
             }
         }
-        struct ContentView_Previews: PreviewProvider {
-            static var previews: some View {
-                ContentView()
-            }
-        }
     }
+}
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
