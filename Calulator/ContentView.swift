@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var totalNumber : String = "0"
-    
+    @State var tempNumber:Int = 0
+    @State var operatorType : ButtonType = .clear
     enum ButtonType:String {
         case first, second, third, forth, fifth, sixth, seventh,
              eighth, nineth, zero
@@ -107,18 +108,46 @@ struct ContentView: View {
                                     else { totalNumber = item.ButtonDisplayName }
                                 } else {
                                     if item == .clear{ totalNumber = "0" }
+                                    else if item == .plus{
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .plus
+                                        totalNumber = "0"
+                                    } else if item == .multiple{
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .multiple
+                                        totalNumber = "0"
+                                    } else if item == .minus{
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .minus
+                                        totalNumber = "0"
+                                    }
+                                    else if item == .minus{
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .minus
+                                        totalNumber = "0"
+                                    }
+                                    else if item == .devide {
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .devide
+                                        totalNumber = "0"
+                                    }
+                                    else if item == .equal {
+                                        if operatorType == .plus { totalNumber = String((Int(totalNumber) ?? 0) + tempNumber) }
+                                        else if operatorType == .multiple { totalNumber = String((Int(totalNumber) ?? 0) * tempNumber) }
+                                        else if operatorType == .minus { totalNumber = String(tempNumber - (Int(totalNumber) ?? 0))  }
+                                        else if operatorType == .devide{ totalNumber = String(tempNumber / (Int(totalNumber) ?? 0))  }
+                                    }
                                     else { totalNumber += item.ButtonDisplayName }
                                 }
-                            } label: {
-                            Text(item.ButtonDisplayName)
-                                .frame(width: 80,height: 80)
-                                .background(item.backgroundColor)
-                                .foregroundColor(item.foregroundColor)
-                                .cornerRadius(40)
-                                .foregroundColor(.white)
-                                .bold()
-                                .font(.system(size:33))
-                            }
+                            }label: {
+                                    Text(item.ButtonDisplayName)
+                                        .frame(width: item == .some(.zero) ? 160:80, height: 80)
+                                        .background(item.backgroundColor)
+                                        .foregroundColor(item.foregroundColor)
+                                        .cornerRadius(40)
+                                        .foregroundColor(.white)
+                                        .font(.system(size:33))
+                                }
                         }
                     }
                 }
