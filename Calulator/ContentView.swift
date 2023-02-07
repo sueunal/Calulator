@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @State private var totalNumber : String = "0"
     @State var tempNumber:Int = 0
     @State var operatorType : ButtonType = .clear
+    @State var isNotEditing : Bool = true
+    
     enum ButtonType:String {
         case first, second, third, forth, fifth, sixth, seventh,
              eighth, nineth, zero
@@ -49,11 +52,11 @@ struct ContentView: View {
             case .multiple:
                 return "X"
             case .devide:
-                return "$"
+                return "/"
             case .percent:
                 return "%"
             case .opposite:
-                return "/"
+                return "+/-"
             case .clear:
                 return "C"
             }
@@ -99,60 +102,86 @@ struct ContentView: View {
                 ForEach(buttonNumber,id:\.self) {line in
                     HStack{
                         ForEach(line, id:\.self){ item in
-                            Button{
-                                if totalNumber == "0" {
-                                    if item == .clear{ totalNumber = "0" }
-                                    else if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
+                            Button {
+                                if isNotEditing { //처음 입력 받고 있지 않을 때 실행, 초기값: 0
+                                    totalNumber = "0"
+                                    if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
                                         totalNumber = "Error"
+                                        // 아무것도 입력 받지 않았는데 계산 버튼 누르면 에러 메시지 출력
                                     }
-                                    else { totalNumber = item.ButtonDisplayName }
-                                } else {
-                                    if item == .clear{ totalNumber = "0" }
+                                    else {
+                                        totalNumber += item.ButtonDisplayName
+                                    }
+                                }
+                                else {
+                                    if item == .clear{
+                                        totalNumber = "0"
+                                    }
                                     else if item == .plus{
                                         tempNumber = Int(totalNumber) ?? 0
                                         operatorType = .plus
-                                        totalNumber = "0"
+                                        isNotEditing = false
                                     } else if item == .multiple{
                                         tempNumber = Int(totalNumber) ?? 0
                                         operatorType = .multiple
-                                        totalNumber = "0"
+                                        isNotEditing = false
                                     } else if item == .minus{
                                         tempNumber = Int(totalNumber) ?? 0
                                         operatorType = .minus
-                                        totalNumber = "0"
+                                        isNotEditing = false
                                     }
                                     else if item == .minus{
                                         tempNumber = Int(totalNumber) ?? 0
                                         operatorType = .minus
-                                        totalNumber = "0"
+                                        isNotEditing = false
                                     }
                                     else if item == .devide {
                                         tempNumber = Int(totalNumber) ?? 0
                                         operatorType = .devide
-                                        totalNumber = "0"
+                                        isNotEditing = false
                                     }
                                     else if item == .equal {
-                                        if operatorType == .plus { totalNumber = String((Int(totalNumber) ?? 0) + tempNumber) }
-                                        else if operatorType == .multiple { totalNumber = String((Int(totalNumber) ?? 0) * tempNumber) }
-                                        else if operatorType == .minus { totalNumber = String(tempNumber - (Int(totalNumber) ?? 0))  }
-                                        else if operatorType == .devide{ totalNumber = String(tempNumber / (Int(totalNumber) ?? 0))  }
+                                        if operatorType == .plus {
+                                            totalNumber = String((Int(totalNumber) ?? 0) + tempNumber)
+                                        }
+                                        else if operatorType == .multiple {
+                                            totalNumber = String((Int(totalNumber) ?? 0) * tempNumber)
+                                        }
+                                        else if operatorType == .minus {
+                                            totalNumber = String(tempNumber - (Int(totalNumber) ?? 0))
+                                        }
+                                        else if operatorType == .devide {
+                                            totalNumber = String(tempNumber / (Int(totalNumber) ?? 0))
+                                        }
                                     }
-                                    else { totalNumber += item.ButtonDisplayName }
+                                    else {
+                                        totalNumber += item.ButtonDisplayName
+                                    }
                                 }
                             }label: {
-                                    Text(item.ButtonDisplayName)
-                                        .frame(width: item == .some(.zero) ? 160:80, height: 80)
-                                        .background(item.backgroundColor)
-                                        .foregroundColor(item.foregroundColor)
-                                        .cornerRadius(40)
-                                        .foregroundColor(.white)
-                                        .font(.system(size:33))
-                                }
+                                Text(item.ButtonDisplayName)
+                                    .frame(width:calulateButtonWidth(button: item), height: 80)
+                                    .background(item.backgroundColor)
+                                    .foregroundColor(item.foregroundColor)
+                                    .cornerRadius(40)
+                                    .foregroundColor(.white)
+                                    .font(.system(size:33))
+                                    .bold()
+                            }
                         }
                     }
                 }
             }
         }
+    }
+    private func calulateButtonWidth(button: ButtonType)->CGFloat{
+        switch button{
+        case .zero:
+            return  (UIScreen.main.bounds.width - 5*10) / 4 * 2
+        default:
+            return ((UIScreen.main.bounds.width - 5 * 10) / 4)
+        }
+        
     }
 }
 struct ContentView_Previews: PreviewProvider {
