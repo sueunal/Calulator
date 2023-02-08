@@ -11,6 +11,9 @@ struct ContentView: View {
     @State private var totalNumber : String = "0"
     @State var tempNumber:Int = 0
     @State var operatorType : ButtonType = .clear
+    @State var isNotEditing : Bool = true // 계산기 사용하고 있지 않음: true
+    // 계산기 사용중: false
+    
     enum ButtonType:String {
         case first, second, third, forth, fifth, sixth, seventh,
              eighth, nineth, zero
@@ -49,11 +52,11 @@ struct ContentView: View {
             case .multiple:
                 return "X"
             case .devide:
-                return "$"
+                return "/"
             case .percent:
                 return "%"
             case .opposite:
-                return "/"
+                return "+/-"
             case .clear:
                 return "C"
             }
@@ -96,11 +99,11 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .padding()
                 }
-                ForEach(buttonNumber,id:\.self) {line in
+                ForEach(buttonNumber,id:\.self) { line in
                     HStack{
                         ForEach(line, id:\.self){ item in
                             Button{
-                                if totalNumber == "0" {
+                                if isNotEditing {
                                     if item == .clear{ totalNumber = "0" }
                                     else if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
                                         totalNumber = "Error"
@@ -140,18 +143,27 @@ struct ContentView: View {
                                     else { totalNumber += item.ButtonDisplayName }
                                 }
                             }label: {
-                                    Text(item.ButtonDisplayName)
-                                        .frame(width: item == .some(.zero) ? 160:80, height: 80)
-                                        .background(item.backgroundColor)
-                                        .foregroundColor(item.foregroundColor)
-                                        .cornerRadius(40)
-                                        .foregroundColor(.white)
-                                        .font(.system(size:33))
-                                }
+                                Text(item.ButtonDisplayName)
+                                    .frame(width:calculateButtonWidth(button: item), height: 80)
+                                    .background(item.backgroundColor)
+                                    .foregroundColor(item.foregroundColor)
+                                    .cornerRadius(40)
+                                    .foregroundColor(.white)
+                                    .font(.system(size:33))
+                                    .bold()
+                            }
                         }
                     }
                 }
             }
+        }
+    }
+    private func calculateButtonWidth(button:ButtonType)->CGFloat{
+        switch button{
+        case .zero:
+            return ((UIScreen.main.bounds.width - 5 * 10) / 4) * 2
+        default:
+            return (UIScreen.main.bounds.width - 5 * 10) / 4
         }
     }
 }
