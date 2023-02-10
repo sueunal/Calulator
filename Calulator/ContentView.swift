@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @State private var totalNumber : String = "0"
     @State var tempNumber:Int = 0
     @State var operatorType : ButtonType = .clear
-    @State var isNotEditing : Bool = true // 계산기 사용하고 있지 않음: true
-    // 계산기 사용중: false
+    @State var isNotEditing : Bool = true
     
     enum ButtonType:String {
         case first, second, third, forth, fifth, sixth, seventh,
@@ -99,14 +99,15 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .padding()
                 }
-                ForEach(buttonNumber,id:\.self) { line in
+                ForEach(buttonNumber,id:\.self) {line in
                     HStack{
                         ForEach(line, id:\.self){ item in
-                            Button{
-                                if isNotEditing { //입력 상태가 아니면 totalNumber = 0
-                                    if item == .clear{ totalNumber = "0" }
-                                    else if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
+                            Button {
+                                if isNotEditing { //처음 입력 받고 있지 않을 때 실행, 초기값: 0
+                                    totalNumber = "0"
+                                    if item == .plus || item == .minus || item == .multiple || item == .devide || item == .opposite {
                                         totalNumber = "Error"
+                                        // 아무것도 입력 받지 않았는데 계산 버튼 누르면 에러 메시지 출력
                                     }
                                     else {
                                         totalNumber = item.ButtonDisplayName
